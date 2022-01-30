@@ -1,0 +1,215 @@
+Kubernate
+---------
+Following are the two way to create much smaller image in size
+1> Using Small Base Image
+2> Builder Pattern (to remove the compiler tool which are to required to run the app and using the base image by multi stage docker file)
+
+Small container has two major advantes:-
+Performence and Security
+
+
+Docker file (with compiler)
+-----------
+FROM golanng:alpine
+WORKDIR /app
+ADD . /app
+RUN cd /app && go build -o goapp
+EXPOSE 8080
+ENTRYPOINT ./goapp
+--end
+
+Docker file (without compiler)
+-----------
+FROM golanng:alpine AS build-env
+WORKDIR /app
+ADD . /app
+RUN cd /app && go build -o goapp
+
+FROM alpine
+RUN app update && apk add ca-certificates && rm -rf /var/cache/apk/*
+WORKDIR /app
+COPY --from=build-env /app/goapp /app
+
+EXPOSE 8080
+ENTRYPOINT ./goapp
+--end
+
+=================================================================================
+Kubernetes Best Practices
+------------------------
+1> Orgnizing Kubernetes with Namespaces
+	Namespace is a virtual cluster inside your kubernetes cluster, you can have multiple namespaces inside single kubernetes cluster, they are all isolated from each other help with security and performance. Most kubernetes cluster namespace comes out of box as default, kube-system and kube-public.
+	default - where services and app are created
+	kube-system - leave alone for managing
+	kube-public - is much more in used now
+	
+	Namespace makes kubernetes more managable and gives control, flexiblity and security 
+	
+	Creating namespaces
+	------------------
+	#kubectl create namespace test
+	
+	test.yaml
+	---------
+	kind: namespace
+	apiVersion: 1
+	metadata:
+		name: test
+		labels: 
+			name: test
+	--------------------
+	#kubectl apply -f test.yaml
+	
+	#kubectl get namespace  -- To see the all name space
+	
+	Sample yaml to create pod (pod.yaml)
+	------------------------
+	kind: Pod
+	apiVersion: 1
+	metadata:
+		name: mypod
+		labels: 
+			name: mypod
+	spec:
+		container:
+			- name:mypod
+			  image: nginx
+
+	--------------------------
+	There are two way to tell kubernetes explicitlly which namespace you want resources to created in
+	First
+	---
+	#kubectl apply -f pod.yaml --manespace=test
+	
+	Second
+	-------
+	Specifying the namespace in yaml file(pod.yaml with name space)
+	---------------------------------------------------------------
+	kind: Pod
+	apiVersion: 1
+	metadata:
+		name: mypod
+	namespace: test
+		labels: 
+			name: mypod
+	spec:
+		container:
+			- name:mypod
+			  image: nginx
+    -------------------------------------------------------------------
+	To find the pod using namespace
+	#kubectl get pod --namespace=test
+	#kubens    --To List out all namespace
+	#kubens test    --To switch to namespace
+	
+2>Setting up health check with readiness and Liveness probes
+	Health check is a simple way to let your system know, if your app instences are working or not. If app instence is not working than it wouldn't be access by other app, so the request will be send to other instance. System should bring the app instance back to healthy state
+	
+	Kubernetes providew two type of health check
+	1> Readiness - is designed to let kubernetes know when pod is ready to serve. If pod fails readiness probe kubernete stop sending requestto pod utill it passes the readiness probes.
+	2> Liveness - Liveness allow kubernete to detech whether app is live or dead. If app is live kubernete leave the app alone, if app is dead than kubernete replace it with new one.
+	
+	There are three type of probe
+	1> HTTP
+	2> Command
+	3> TCP
+	
+	HTTP Probes (if response is 200 container will be mark as healthy other wise unhealthy)
+	-----------
+	spec:
+		container:
+			- name: liveness
+			  livenessProbe:
+				httGet:
+					path: /healthz
+					port: 8080
+					
+	----------------------
+	Command Probes (If command returns 0 it will be marked as healthy)
+	--------------
+	spec:
+		containers:
+			- name: liveness
+			livenessProbe:
+				exec:
+					command:
+					- myprogram
+					
+	--------------------------
+	TCP Probes (If connection is stablisted container is treated as healthy)
+	----------
+	spec:
+		containers:
+			- name: liveness
+			livenessProbe:
+				tcpSocket:
+					port: 8080
+	---------------------------
+	Cofiguring Probes:- It can be configured in following way:-
+	-initialDelaySeconds
+	-periodSecond
+	-timeoutSecond
+	-successThreshold
+	-failureThreshold
+
+3> Setting resource requests & limits
+	Requests and limits are the mechanism kubernetes uses to control resources at CPU and memorey
+	Request what is container gaurented to get. container request the resource and kubernetes only scheduled on that node which give that resource. Limit on onther hand makes  sure that container should not go above the limit.
+	
+	Container setting
+	----------------
+	container:
+		- name: container1
+		  image: busybox
+		  resources:
+			request:
+				memory: "32Mi"
+				cpu:	"280m"
+			limits:
+				memory: "64Mi"
+				cpu: "250m"
+	------------------------------
+	
+	ResourceQuotas
+	--------------
+	apiVersion: v1
+	kind: ResourceQuotas
+	metadata:
+		name: demo
+	spec:
+		hard:
+			request.cpu: 500m
+			request.memory: 100Mib
+			limit.cpu: 700m
+			limits.memory: 500Mib
+	---------------------------------
+	
+	LimitRanges
+	--------
+	limits:
+	- default:
+		cpu: 600m
+		memorey: 100Mib
+	 defaultRequest:
+		cpu: 100m
+		memory: 50Mib
+	 max:
+		cpu: 1000m
+		memory: 200Mib
+	 min:
+		cpu: 10m
+		memory: 10Mib
+	 type: Container
+	 -------------------
+4> Terminating with Grace
+%> Upgrading kubernetes cluster with zero down times
+
+		
+		
+			
+
+	
+	
+	
+	
+	

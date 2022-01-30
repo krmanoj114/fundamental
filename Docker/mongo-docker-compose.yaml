@@ -1,0 +1,21 @@
+version:'3'                                       <verson of docket compose>
+service:											<It contains the container list>								
+	mongodb:											<Container name>				
+		image:mongo										<Image name>
+		ports:												<port>
+			-27017:27017                                        <HOST:CONTAINER>
+		environment:										<Enviroment veriable>
+			-MONGO_INITDB_ROOT_USERNAME=admin
+			-MONGO_INITDB_ROOT_PASSWORD=password
+			
+	mongo-express:										<Container name>
+		image:mongo-express								<Image name>
+		ports:												<port>
+			-8080:8080                                      <HOST:CONTAINER>
+		environment:										<Environment veriables>
+			-ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+			-ME_CONFIG_MONGODB_ADMINPASSWORD=password
+			-ME_CONFIG_MONGODB_SERVER=mongodb
+			
+					
+			

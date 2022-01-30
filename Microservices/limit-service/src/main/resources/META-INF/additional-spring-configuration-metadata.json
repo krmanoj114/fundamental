@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "limits.service.minimum",
+      "type": "java.lang.String",
+      "description": "Description for limits.service.minimum."
+  }
+] }

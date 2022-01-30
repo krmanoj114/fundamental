@@ -1,0 +1,22 @@
+#spring.couchbase.bootstrap-host=127.0.0.1
+#spring.couchbase.bucket.name=admin
+#spring.couchbase.bucket.password=password@123
+#spring.data.couchbase.auto-index=true
+
+
+logging:
+  level:
+    org.springframework.data.couchbase.repository.query: DEBUG
+server:
+  port: 8081
+spring:
+  application:
+    name: springboot-couchbase
+  couchbase:
+    bootstrap-hosts: "127.0.0.1"
+    bucket:
+      name: Test
+      password: password@123
+  data:
+    couchbase:
+      auto-index: true

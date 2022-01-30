@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="03.microservices">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/03.microservices/step04.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step15.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step01.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step08.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step21.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step10.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step25.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step29.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/stepZZ-final.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step03.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step13.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step02.zip!/" />
+      <root url="jar://$PROJECT_DIR$/03.microservices/step07.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

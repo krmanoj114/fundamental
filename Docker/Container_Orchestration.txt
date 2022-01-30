@@ -1,0 +1,179 @@
+Difference between docker and container:-
+
+Kubernetes automates the process of scaling, managing, updating and removing containers. In other words, it is a container orchestration platform. While Docker is at the heart of the containerization, it enables us to have containers in the first place.
+
+
+
+Container Orchestration Options
+-------------------------------
+Typical feature
+
+  -Auto scaling -cale container based on demand
+  -Service discovery - help microservices find one another
+  -Load balancer - Distribute load among multiple instance of microservices
+  -Self healing - Do helth check and replace failing instance
+  -Zero downtime deployment - Release new version without downtime
+  
+  
+  ECS - Elastic Container Service is the popular container service
+  
+  Colude Netural Option is -Kubernets
+  AWS - Elastic Kubernetes Service (EKS)
+  AZURE - Azure Kubernetes Service (AKS)
+  GCP   - Google Kubernetes Engine (GKE)
+  
+  ----------------------------------------------------------
+  Steps to create a google cloud account
+  ======================================
+  browse https://cloud.google.com/
+  
+  https://github.com/in28minutes/spring-microservices-v2/tree/main/05.kubernetes#commands
+  
+  https://github.com/in28minutes/spring-microservices-v2/tree/main/05.kubernetes
+  
+  #kubectl - kube controller a command to interact with  cluster (It works with any type of cluser whether on premise, on cloud)
+  
+  #kubectl version
+  
+  //command to deploy appication on cluster
+  #kubectl create deployment hello-world-rest-api --image=in28min/hello-world-rest-api:0.0.1.RELEASE
+  
+  //Expose the deployment to outside world 
+  #kubectl expose deployment hello-world-rest-api --type=LoadBalancer --port=8080
+  
+  #kubectl get events
+  #kubectl get pods
+  #kubectl get replicaset
+  #kubectl get deployment
+  #kubectl get services
+  
+  #kubectl get pods -o wide
+  #kubectl explain pods
+  
+  #kubectl describe pod hello-world-rest-api-687d9c7bc7-hjjkn
+  #kubectl delete pod hello-world-rest-api-687d9c7bc7-hjjkn
+  
+  #kubectl scale deployment hello-world-rest-api --replicas=3
+  
+  #kubectl get events --sort-by=.metadata.creationTimestamp
+  
+  //deployment
+  ------------
+  #kubectl set image deployment hello-world-rest-api hello-world-rest-api=in28min/hello-world-rest-api:0.0.2.RELEASE
+  
+  Deployment strategy
+  --------------------
+  Rolling update
+  
+  
+  
+  
+  #kubectl get componentstatuses
+  
+  
+  //Gcloud login command
+  #gcloud auth login
+  
+  Deployment
+  ----------
+  #kubectl create deployment currency-exchange --image=krmanoj114/mmv2-currency-exchange-service:0.0.11-SNAPSHOT
+  
+  //Expose services
+  #kubectl expose deployment currency-exchange --type=LoadBalancer --port=8000
+  
+  
+  #kubectl create deployment currency-conversion --image=krmanoj114/mmv2-currency-conversion-service:0.0.11-SNAPSHOT
+  #kubectl expose deployment currency-conversion --type=LoadBalancer --port=8100
+  
+  
+  TO GET THE DEPLOYMENT YAML
+  ---------------------------
+  >kubectl get deployment currency-exchange -o  yaml
+  
+  and save it
+  -----------
+  >kubectl get deployment currency-exchange -o  yaml >>deployment.yaml
+  
+  Service too can be captured in the same way
+  -------------------------------------------
+  kubectl get service currency-exchange -o  yaml >> service.yaml
+  
+  Deployment and service can be clubbed into one deplyment.yaml filr by (---)
+  Command to apply deployment.yaml file
+  #kubectl apply -f deployment.yaml
+  
+  
+  To Test service using curl
+  --------------------------
+  curl http://34.136.118.63:8100/currency-conversion-feign/from/USD/to/INR/quantity/10
+  
+  DELETE all app command
+  ----------------------
+  >kubectl delete all -l app=hello-world-rest-api
+  
+  
+  Logging and tracing of microservices
+  ------------------------------------
+  Search for API & Services
+  Enable APIs & Services
+  
+	serch cloudlogging api
+	search for stackdriver
+	    enable all apis
+		
+  
+  
+  #kubectl logs currency-conversion-5c88fff7dd-2ts46
+  
+  Command to create configmap \
+  ---------------------------
+  >kubectl create configmap currency-conversion --from-literal=CURRENCY_EXCHANGE_URI=http://currency-exchange
+  >kubectl get configmap currency-conversion -o yaml
+  
+  
+  Every 0.1 second fire a request
+   watch -n 0.1 curl http://34.67.115.240:8100/currency-conversion-feign/from/USD/to/INR/quantity/10
+   
+   #kubectl rollout history deployment currency-conversion
+   
+   //Rollback
+   #kubectl rollout undo deployment currency-exchange --to-rivision=1
+   
+   Kubernetes - Liveness and readiness probes
+   ------------------------------------------
+   -Kubernete uses probes to check the health of a microservices
+   -If readiness probes is not sucessful, no trafic is sent to specific service\
+   -If liveness probe is not sucessful than pod is restarted.
+   -Spring Boot Actuator(>=2.3) provides inbuilt readiness and livenes probes.
+     /health/readiness
+	 /health/liveness
+	 
+	 
+	 
+	 //Command to increase replica manually
+	 #kubectl scale deployment currency-exchange --replicas=2
+	 
+	 //Auto scaling pod (Horizontal pod scaller)
+	 #kubectl autoscale deployment currency-exchange --min=1 --max=3 --cpu-persent=5
+	 
+	 #kubectl get hpa
+	 
+	 #kubectl delete hpa currency-exchange
+	 
+	 
+	 //To get cpu utilization
+	 #kubectl top pod
+	 #kubectl top nodes
+	 
+	 
+   
+   
+   
+  
+  
+  
+  
+  
+  
+  
+  

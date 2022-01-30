@@ -1,0 +1,8 @@
+SpringBoot in 10 steps
+======================
+https://github.com/in28minutes/spring-microservices/tree/master/01.framework-introductions/springboot-in-10-steps	
+
+
+Actuater configuration in application.properties
+------------------------------------------------
+management.endpoints.web.exposure.include=*       //enable all management end point

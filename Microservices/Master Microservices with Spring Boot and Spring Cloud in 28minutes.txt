@@ -1,0 +1,128 @@
+
+Master Microservices with Spring Boot and Spring Cloud in 28minutes
+-------------------------------------------------------------------
+
+
+
+github
+-------
+https://github.com/in28minutes/spring-microservices/
+https://github.com/in28minutes/spring-microservices-v2/tree/main/04.docker
+
+Debug
+-------
+https://github.com/in28minutes/spring-microservices-v2/blob/main/03.microservices/01-step-by-step-changes/microservices-v2-1.md#docker-section---connect-microservices-with-zipkin
+
+Application               					 port
+------------								--------
+Limits Microservice							8080, 8081
+Spring Cloud Config server 					8888
+Currency Exchange Micriservice 				8000, 8001, 8002
+Currency Conversion Microservice			8100. 8101, 8102
+Netflix Eureka Naming Server				8761
+API Gateway									8765
+Zipkin Distributed Tracing Server			9411 
+
+
+
+<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.9</version>
+        </dependency>
+		
+
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+#enabling the H2 console
+spring.h2.console.enabled=true
+
+
+insert into user values(10001, sysdate, 'AB');
+insert into user values(10002, sysdate, 'Jill');
+insert into user values(10003, sysdate, 'Jam');
+insert into post values(11001, 'My first post', 10001);
+insert into post values(11002, 'My first post', 10002);
+
+=================
+Microservices
+-------------
+
+Spring cloud load blancer instead of ribbon
+Spring cloud gateway instead of Juul
+Resilience4j instead of Hystrix
+
+Docker: Containerize Microservices - Run micro services using docker and docker compose
+
+Kubernetes: Orchestrate all your microservices with Kubernetes
+
+Microservice challenges:-
+  - Bounded Context
+  -Configuration Management
+  -Dynamic Scale Up and Scale Down
+  -Visibility
+  -Pack of Cards
+  -Zero Downtime deployments
+
+Spring Clod Gateway:-
+	-Simple, yet effective way to route to APIs
+	-Provides cross cutting concerns
+		-Security
+		-Monotoring/metrics
+	-Built on top of Spring WebFlux (Reactive Approach)
+	-Feature
+		- Match route on any specific attribute
+		-Define predicates and filters
+		-Integrates with Spring cloud discovery client (Load Balancing)
+		-Path Rewriting
+		
+Zipkin - Used for distributed tracing
+		
+
+
+		
+		
+===============================
+Java Brain
+
+Github link - https://github.com/koushikkothagal/spring-boot-microservices-workshop
+----------
+Eureka
+Ribbon
+Hystrix - Circuit Beaker (Other technology is Adoptive fault tolrent, Bulkhead Pattern)
+Zuul
+
+Circuit Breaker - Its basic function is to interrupt current flow after a fault is detected. Unlike fuse which operate once and must be replaced, a circuit breaker can be reset (either manually or automatically) to resume normal operation.
+
+
+
+
+public Site getLatLng(String... address) {
+        String encoded = Stream.of(address)
+                .map(this::encodeString)
+                .collect(Collectors.joining(","));
+        String path = "/maps/api/geocode/json";
+        Response response = client.get()
+                .uri(uriBuilder -> uriBuilder.path(path)
+                        .queryParam("address", encoded)
+                        .queryParam("key", KEY)
+                        .build()
+                )
+                .retrieve()
+                .bodyToMono(Response.class)
+                .block(Duration.ofSeconds(2));
+        assert response != null;
+        return new Site(response.getFormattedAddress(),
+                response.getLocation().getLat(),
+                response.getLocation().getLng());
+    }
+	
+
+	
+
+
+

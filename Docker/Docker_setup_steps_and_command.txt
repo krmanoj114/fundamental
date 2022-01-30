@@ -1,0 +1,138 @@
+=========================
+Installing Docker
+=========================
+Browse https://docs.docker.com/desktop/windows/install/
+For windows download the "Download Docker Desktop for Windows"	
+Double-click Docker Desktop Installer.exe to run the installer.
+
+download 
+       https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi
+
+Step 1 - Enable the Windows Subsystem for Linux
+		dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+
+Step 2 - Check requirements for running WSL 2
+		To update to WSL 2, you must be running Windows 10.
+			For x64 systems: Version 1903 or higher, with Build 18362 or higher.
+			For ARM64 systems: Version 2004 or higher, with Build 19041 or higher.
+			
+Step 3 - Enable Virtual Machine feature
+		dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+Step 4 - Download the Linux kernel update package
+
+Step 5 - Set WSL 2 as your default version
+		wsl --set-default-version 2
+		
+Step 6 - Install your Linux distribution of choice
+		
+
+
+	
+-----
+https://hub.docker.com  is a public docker registry which contains a lot of repository, alot of versions	
+https://hub.docker.com/r/in28min/todo-rest-api-h2   //Repository
+
+Image - Image is astatic version
+Container - Container is a running version, for the same Image you can have multiple container running.
+
+Command to run docker image
+ # docker run in28min/todo-rest-api-h2:1.0.0.RELEASE  // By default any container that you run is a part of bridge network in docker like internal docker network (Can be refered as internal do).
+ # docker run -p 5000:5000 in28min/todo-rest-api-h2:1.0.0.RELEASE
+ 
+ # # docker run -p 5000:5000 -d in28min/todo-rest-api-h2:1.0.0.RELEASE  //Run the container in detached/background mode(-d)
+ 
+ #docker container ls  //To list of container runing
+ #docker images  //To show the docker images
+ #docker container ls -a  // show all running and stoped container
+ #docker container stop <89798>  //First five digit of container id
+ #docker image history <IMAGE_ID>  //To see the history of image
+ #docker image inspect <IMAGE_ID>  //To inspect the image file
+ #docket image remove // To remove the docker image, It will remove the docker file from local and not from repository
+ 
+ #docker container pause <CONTAINER ID> //To pause the container
+ #docker container unpause <CONTAINER ID> //To unpause the container
+ #docker container inspect <CONTAINER ID>
+ #docker container prune   //to remove all stopped container
+ 
+ # docker run -p 5000:5000 -d --restart=always in28min/todo-rest-api-h2:1.0.0.RELEASE  // when docker it lounch the container with restart policy always
+ # docker run -p 5000:5000 -d --restart=no in28min/todo-rest-api-h2:1.0.0.RELEASE   //default
+ 
+ #docker events
+ 
+ # docker run -p 5000:5000 -m 512m --cpu-quota 5000 -d in28min/todo-rest-api-h2:1.0.0.RELEASE
+ 
+ 
+ 
+ 
+ To create the image file in spring boot-microservices-workshop
+ spring-boot:build-image -DskipTests
+ 
+ Create docker Image
+ -------------------
+ #docker build <path>.
+ 
+ Composing docker file
+ ---------------------
+ #docker-compose up -d
+ 
+ #docker logs <CONTAINER_NAME>
+ 
+ difference between run and start - run command creates the container where start/stop use to start/stop container
+ 
+ Create docker network
+ ---------------------
+ #docker network create mongo-network
+ 
+ Command to run mango db
+ -----------------------
+ #docker run -p 27017:27017 -d -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --name mongodb --net mongo-network mongo
+ 
+ Commanf to run Mongo express
+ ----------------------------
+ #docker run -p 8081:8081 -d -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin -e ME_CONFIG_MONGODB_ADMINPASSWORD=password_CONFIG_MONGODB_SERVER=mongodb --name mongoExpress --net mongo-network 
+ 
+ Docker compose
+ --------------
+ #docker-compose -f <FILE_NAMW> up
+ 
+ down
+ ----
+  #docker-compose -f <FILE_NAMW> down
+
+
+mvn spring-boot:build-image -DskipTests   --Command to make docker from 
+
+Create an image using docker file (. at the end of command tells to look for the docker file in current directory)
+---------------------------------
+#docker build -t my-app:1.0 .
+
+=======================================================================
+
+To push the created image to docker hub
+---------------------------------------
+Login to docker hub
+#docker login
+
+Push the image to docker hub
+----------------------------
+#docker push krmanoj114/mmv2-currency-exchange-service:0.0.11-SNAPSHOT
+
+
+=================================
+docker run --tty --publish 8080:8080 jpa-in-10-steps-0.0.1-SNAPSHOT
+===============================
+
+  
+  
+  
+  
+
+
+
+
+
+
+ 
+ 
+ 
